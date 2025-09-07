@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lobby System</title>
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 Game Lobby</h1>
+    
+    <div class="main-buttons">
+      <button onclick="toggleForm('create')">Create Lobby</button>
+      <button onclick="toggleForm('join')">Join Lobby</button>
+    </div>
+
+    <div id="create-lobby" class="form-section hidden">
+      <h2>Create New Lobby</h2>
+      <input id="lobby-name" placeholder="Enter lobby name" maxlength="20">
+      <input id="lobby-pass" type="password" placeholder="Password (optional)">
+      <input id="username-create" placeholder="Your username" maxlength="15">
+      <button onclick="createLobby()">Create Lobby</button>
+    </div>
+
+    <div id="join-lobby" class="form-section hidden">
+      <h2>Join Existing Lobby</h2>
+      <input id="join-name" placeholder="Enter lobby name">
+      <input id="join-pass" type="password" placeholder="Password (if required)">
+      <input id="username-join" placeholder="Your username" maxlength="15">
+      <button onclick="joinLobby()">Join Lobby</button>
+    </div>
+
+    <div id="lobby-info" class="hidden">
+      <!-- Lobby info will be inserted here -->
+    </div>
+
+    <div class="members-section">
+      <h2>👥 Lobby Members</h2>
+      <ul id="members-list">
+        <li style="color: #999; font-style: italic;">No active lobby</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleForm(type) {
+      document.getElementById('create-lobby').classList.add('hidden');
+      document.getElementById('join-lobby').classList.add('hidden');
+      
+      if (type === 'create') {
+        document.getElementById('create-lobby').classList.remove('hidden');
+      } else {
+        document.getElementById('join-lobby').classList.remove('hidden');
+      }
+    }
+
+    function showError(message) {
+      const existingError = document.querySelector('.error');
+      if (existingError) {
+        existingError.remove();
+      }
+
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error';
+      errorDiv.textContent = message;
+      document.querySelector('.container').insertBefore(errorDiv, document.querySelector('.members-section'));
+      
+      setTimeout(() => {
+        if (errorDiv.parentNode) {
+          errorDiv.remove();
+        }
+      }, 5000);
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
